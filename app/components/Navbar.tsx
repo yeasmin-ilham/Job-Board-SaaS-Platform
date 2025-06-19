@@ -4,8 +4,11 @@ import Image from "next/image";
 import Logo from "@/public/pngegg.png"
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./ModeToggle";
+import { auth, signOut } from "@/lib/auth";
 
-export function Navbar(){
+export async function Navbar(){
+    const session = await auth();
+
     return(
         <nav className="flex justify-between items-center py-5">
             <Link href="/" className="flex gap-2 items-center">
@@ -18,7 +21,13 @@ export function Navbar(){
             </Link>
             <div className="space-x-4 flex items-center">
                 <ModeToggle/>
-                <Button>Login</Button>
+                {session?.user? (<form action={async() =>{
+                    "use server"
+                    await signOut({redirectTo:("/")})
+                }}>
+                    <Button variant="outline">Logout</Button>
+                </form>) : 
+                (<Link href="http://localhost:3000/login"><Button>Login</Button></Link>)}
             </div>
             
         </nav>
