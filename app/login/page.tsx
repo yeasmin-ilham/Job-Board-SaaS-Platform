@@ -20,7 +20,7 @@ export default async function login() {
 
     const session = await auth();
     if(session?.user) {
-        return redirect("/");
+        return redirect ("/");
     }
     return(
         <div className="min-h-screen w-screen flex flex-col justify-center items-center">
@@ -30,7 +30,7 @@ export default async function login() {
            src={Logo}
          className="size-10"
            alt="Image"/>
-           <h1 className="font-bold text-2xl">Job<span className="text-primary">Ilham</span></h1>
+           <h1 className="font-bold text-3xl">Job<span className="text-primary">Ilham</span></h1>
            </Link>
            <Card className="flex flex-col">
            <CardHeader>
