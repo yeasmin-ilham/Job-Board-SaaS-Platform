@@ -15,7 +15,7 @@ export function OnboardingFirstPage({onSelect} : UserSelectionTypeProps ){
                 <h1 className="text-2xl font-bold">Welcome! Lets get started</h1>
                 <p className="text-muted-foreground">choose how you would like to use our platform!</p>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
                 <Button onClick={() => onSelect("company")}
                 variant="outline"
                 className="w-full h-auto p-6 items-center gap-4 border-2 transition-all duration-200 hover:border-primary hover:bg-primary/5">

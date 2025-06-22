@@ -8,10 +8,14 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { countryList } from "@/lib/countryList"
 import { Textarea } from "@/components/ui/textarea"
+import { UploadDropzone } from "@/lib/uploadthing"
+import { useState } from "react"
 
 
 
 export function CompanyForm(){
+    const[image,setimage] = useState("")
+    const [firstpage,setfirstpage] = useState()
 const form = useForm<z.infer<typeof companySchema>>({
     resolver:zodResolver(companySchema),
     defaultValues:{
@@ -95,7 +99,7 @@ const form = useForm<z.infer<typeof companySchema>>({
             </FormField>
                      <FormField
             control={form.control}
-            name="website"
+            name="xAccount"
             render={({field}) => (
                 <FormItem>
                     <FormLabel>X (Twitter) Account</FormLabel>
@@ -108,7 +112,8 @@ const form = useForm<z.infer<typeof companySchema>>({
             >
             </FormField>
             </div>
-                                <FormField
+
+                <FormField
             control={form.control}
             name="about"
             render={({field}) => (
@@ -116,6 +121,23 @@ const form = useForm<z.infer<typeof companySchema>>({
                     <FormLabel>About</FormLabel>
                     <FormControl>
                         <Textarea placeholder="Tell us about your company..." {...field}/>
+                    </FormControl>
+                    <FormMessage/>
+                </FormItem>
+            )}
+            >
+            </FormField>
+
+                <FormField
+            control={form.control}
+            name="logo"
+            render={({field}) => (
+                <FormItem>
+                    <FormLabel>Company Logo</FormLabel>
+                    <FormControl>
+                        <UploadDropzone endpoint="imageUploader" 
+                        onClientUploadComplete={(res) => {field.onChange(res[0].url)}}
+                        className="ut-button:bg-primary ut-button:text-white ut-button:hover:bg-primary/90 ut-label:text-muted-foreground border-primary ut-allowed-content:text-muted-foreground"/>
                     </FormControl>
                     <FormMessage/>
                 </FormItem>

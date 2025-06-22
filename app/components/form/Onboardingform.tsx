@@ -32,12 +32,12 @@ export function Onboardingform(){
     }
     return(
         <>
-        <div className="flex gap-2 items-center mb-8">
+        <div className="flex gap-2 items-center mb-9">
         <Image src={Logo} width={50} height={50} alt="Image"
         />
         <h1 className="text-4xl font-bold">Job<span className="text-primary">Ilham</span></h1>
         </div>
-        <Card className="max-w-lg w-full ">
+        <Card className="max-w-2xl w-full ">
            <CardContent className="p-6">
             {renderstep()}
            </CardContent>
