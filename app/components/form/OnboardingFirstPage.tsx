@@ -12,7 +12,7 @@ export function OnboardingFirstPage({onSelect} : UserSelectionTypeProps ){
         <>
         <div className="space-y-8">
             <div className="text-center space-y-2">
-                <h1 className="text-2xl font-bold">Welcome!Lets get started</h1>
+                <h1 className="text-2xl font-bold">Welcome! Lets get started</h1>
                 <p className="text-muted-foreground">choose how you would like to use our platform!</p>
             </div>
             <div className="flex flex-col gap-4">
@@ -29,7 +29,7 @@ export function OnboardingFirstPage({onSelect} : UserSelectionTypeProps ){
                 </Button>
                 <Button onClick={() => onSelect("jobseeker")}
                 variant="outline"
-                className="w-full h-auto p-6 items-center gap-4 border-2 transition-all duration-200 hover:border-primary hover:bg-primary/5">
+                className="w-full h-auto p-6 items-center gap-4 border-2 transition-all duration-200 hover:border-primary hover:bg-primary/5 mb-5">
                     <div className="size-12 rounded-full bg-primary/1 flex items-center justify-center">
                         <UserRound className="size-6 text-primary"/>
                     </div>
