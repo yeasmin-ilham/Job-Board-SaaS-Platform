@@ -9,13 +9,20 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { countryList } from "@/lib/countryList"
 import { Textarea } from "@/components/ui/textarea"
 import { UploadDropzone } from "@/lib/uploadthing"
-import { useState } from "react"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { XIcon } from "lucide-react"
+import { CreateCompany } from "@/lib/serveraction"
+import { useFormStatus } from "react-dom"
+
 
 
 
 export function CompanyForm(){
-    const[image,setimage] = useState("")
-    const [firstpage,setfirstpage] = useState()
+
+
+
+
 const form = useForm<z.infer<typeof companySchema>>({
     resolver:zodResolver(companySchema),
     defaultValues:{
@@ -27,9 +34,23 @@ const form = useForm<z.infer<typeof companySchema>>({
       xAccount:""  
     }
 })
+
+  async function onSubmit(data:z.infer<typeof companySchema>){
+try {
+    
+    await CreateCompany(data)
+} catch(error){
+    if(error instanceof Error && error.message !== "NEXT_REDIRECT"){
+        console.log("something went wrong")
+    } 
+}
+  } 
+
+  const {pending} = useFormStatus();
+
     return(
         <Form {...form}>
-        <form className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 gap-6">
             <FormField
             control={form.control}
@@ -135,15 +156,36 @@ const form = useForm<z.infer<typeof companySchema>>({
                 <FormItem>
                     <FormLabel>Company Logo</FormLabel>
                     <FormControl>
-                        <UploadDropzone endpoint="imageUploader" 
+                   {field.value?(
+                     <div className="relative w-fit">
+                        <Image
+                        src={field.value}
+                        width={100}
+                        height={100}
+                        alt="Image" className="rounded-lg"/>
+                        <Button
+                        type="button"
+                        variant= "destructive"
+                        size="icon"
+                        className="absolute -top-2 -right-2"
+                        onClick={() => field.onChange("")}>
+                            <XIcon className="size-4"/>
+                        </Button>
+                     </div>
+                   ) : (     <UploadDropzone endpoint="imageUploader" 
                         onClientUploadComplete={(res) => {field.onChange(res[0].url)}}
-                        className="ut-button:bg-primary ut-button:text-white ut-button:hover:bg-primary/90 ut-label:text-muted-foreground border-primary ut-allowed-content:text-muted-foreground"/>
+                        className="ut-button:bg-primary ut-button:text-white ut-button:hover:bg-primary/90 
+                        ut-label:text-muted-foreground border-primary ut-allowed-content:text-muted-foreground"/>)}
                     </FormControl>
                     <FormMessage/>
                 </FormItem>
             )}
             >
             </FormField>
+
+            <Button className="w-full " type="submit" disabled={pending}>
+                {pending? "Submitting..." : "Continue"}
+            </Button>
             
         </form>
         </Form>
