@@ -2,9 +2,11 @@
  
 import {z} from "zod";
 import { User } from "./userRequire"
-import { companySchema } from "./zodSchema";
+import { companySchema, JobseekerSchema } from "./zodSchema";
 import { prisma } from "./prisma";
 import { redirect } from "next/navigation";
+import pdf from "@/public/pdf.png";
+
 
  export async function CreateCompany(data:z.infer<typeof companySchema>){
 
@@ -30,3 +32,26 @@ const validateData = companySchema.parse(data);
 return redirect("/")
 
  }
+
+      export async function CreateJobseekerForm(data:z.infer<typeof JobseekerSchema>){
+            const session = await User();
+
+            const validateData = JobseekerSchema.parse(data);
+
+            await prisma.user.update({
+                where:{
+                    id: session.id,
+                },
+                data:{
+                    onboardingCompleted:true,
+                    userType:"JOB_SEEKER",
+                    Jobseeker:{
+                        create:{
+                            ...validateData,
+                        }
+                    }
+                }
+                
+            });
+            return redirect("/");
+          }

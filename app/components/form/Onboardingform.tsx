@@ -6,6 +6,7 @@ import Image from "next/image"
 import { useState } from "react"
 import { OnboardingFirstPage } from "./OnboardingFirstPage"
 import { CompanyForm } from "./Companyform"
+import { JobseekerForm } from "./Jobseekerform"
 
 export function Onboardingform(){
 
@@ -26,7 +27,7 @@ export function Onboardingform(){
             return userType === "company"? (
                 <CompanyForm/>
             ) : (
-                <p> user is a jobseeker</p>
+                <JobseekerForm/>
             )
         }
     }

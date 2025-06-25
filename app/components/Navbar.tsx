@@ -25,9 +25,9 @@ export async function Navbar(){
                     "use server"
                     await signOut({redirectTo:("/")})
                 }}>
-                    <Button variant="outline">Logout</Button>
+                    <Button >Logout</Button>
                 </form>) : 
-                (<Link href="http://localhost:3000/login"><Button>Login</Button></Link>)}
+                (<Link href="http://localhost:3000/login"><Button variant="outline">Login</Button></Link>)}
             </div>
             
         </nav>

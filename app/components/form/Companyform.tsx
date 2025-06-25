@@ -1,4 +1,4 @@
-
+"use client"
 import { companySchema } from "@/lib/zodSchema"
 import { useForm } from "react-hook-form"
 import {z} from "zod"
@@ -13,7 +13,8 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { XIcon } from "lucide-react"
 import { CreateCompany } from "@/lib/serveraction"
-import { useFormStatus } from "react-dom"
+import { useState } from "react"
+
 
 
 
@@ -35,18 +36,20 @@ const form = useForm<z.infer<typeof companySchema>>({
     }
 })
 
+const [pending, setpending] = useState(false);
   async function onSubmit(data:z.infer<typeof companySchema>){
 try {
-    
+    setpending(true)
     await CreateCompany(data)
 } catch(error){
     if(error instanceof Error && error.message !== "NEXT_REDIRECT"){
         console.log("something went wrong")
     } 
+} finally{
+    setpending(true)
 }
   } 
 
-  const {pending} = useFormStatus();
 
     return(
         <Form {...form}>
@@ -64,8 +67,8 @@ try {
                     <FormMessage/>
                 </FormItem>
             )}
-            >
-            </FormField>
+            />
+          
 
             <FormField
             control={form.control}
@@ -100,8 +103,8 @@ try {
                     <FormMessage/>
                 </FormItem>
             )}
-            >
-            </FormField>
+            />
+          
             
            
                      <FormField
@@ -116,8 +119,8 @@ try {
                     <FormMessage/>
                 </FormItem>
             )}
-            >
-            </FormField>
+            />
+            
                      <FormField
             control={form.control}
             name="xAccount"
@@ -130,8 +133,8 @@ try {
                     <FormMessage/>
                 </FormItem>
             )}
-            >
-            </FormField>
+            />
+           
             </div>
 
                 <FormField
@@ -146,8 +149,8 @@ try {
                     <FormMessage/>
                 </FormItem>
             )}
-            >
-            </FormField>
+            />
+            
 
                 <FormField
             control={form.control}
@@ -180,8 +183,8 @@ try {
                     <FormMessage/>
                 </FormItem>
             )}
-            >
-            </FormField>
+            />
+           
 
             <Button className="w-full " type="submit" disabled={pending}>
                 {pending? "Submitting..." : "Continue"}

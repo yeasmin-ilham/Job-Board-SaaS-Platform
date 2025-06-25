@@ -44,7 +44,7 @@ export default async function login() {
              <form action={async () =>{
                 "use server";
                 await signIn("github" , {
-                    redirectTo:"/"
+                    redirectTo:"/onboarding"
                 })
              }}>
                 <Button className="w-full" variant="outline">
@@ -55,7 +55,7 @@ export default async function login() {
             <form action={async() =>{
                 "use server"
                 await signIn("google" , {
-                redirectTo:"/"
+                redirectTo:"/onboarding"
                 })
             }}>
                 <Button className="w-full" variant="outline">
