@@ -109,7 +109,7 @@ try{
       </div>
 
       <Button type="submit" className="w-full" disabled={pending}>
-        {pending? "Submitting" : "Continue"}
+        {pending? "Submitting..." : "Continue"}
       </Button>
         </form>
        </Form>

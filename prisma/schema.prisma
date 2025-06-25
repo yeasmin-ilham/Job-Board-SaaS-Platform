@@ -22,7 +22,7 @@ model User {
 
 onboardingCompleted Boolean @default(false)
 
-  Company Company?
+  company Company?
   jobseeker Jobseeker?
  
   createdAt DateTime @default(now())

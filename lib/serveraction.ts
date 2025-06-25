@@ -5,7 +5,7 @@ import { User } from "./userRequire"
 import { companySchema, JobseekerSchema } from "./zodSchema";
 import { prisma } from "./prisma";
 import { redirect } from "next/navigation";
-import pdf from "@/public/pdf.png";
+
 
 
  export async function CreateCompany(data:z.infer<typeof companySchema>){
@@ -21,7 +21,7 @@ const validateData = companySchema.parse(data);
     data:{
         onboardingCompleted:true,
         userType:"COMPANY",
-        Company:{
+        company:{
             create:{
                 ...validateData,
             }
@@ -45,7 +45,7 @@ return redirect("/")
                 data:{
                     onboardingCompleted:true,
                     userType:"JOB_SEEKER",
-                    Jobseeker:{
+                    jobseeker:{
                         create:{
                             ...validateData,
                         }
