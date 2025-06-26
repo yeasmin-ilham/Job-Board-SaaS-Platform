@@ -21,9 +21,6 @@ import { useState } from "react"
 
 export function CompanyForm(){
 
-
-
-
 const form = useForm<z.infer<typeof companySchema>>({
     resolver:zodResolver(companySchema),
     defaultValues:{
