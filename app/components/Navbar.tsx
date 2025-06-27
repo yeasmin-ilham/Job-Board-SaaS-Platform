@@ -2,9 +2,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/pngegg.png"
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { ModeToggle } from "./ModeToggle";
-import { auth, signOut } from "@/lib/auth";
+import { auth } from "@/lib/auth";
+import { DropMenu } from "./form/DropMenu";
 
 export async function Navbar(){
     const session = await auth();
@@ -16,19 +17,24 @@ export async function Navbar(){
             src={Logo}
             width={40}
             height={40}
-            alt="image"/>
-            <h1 className="text-2xl font-bold">Job<span className="text-primary">Ilham</span></h1>
+            alt="image" />
+            <h1 className="text-2xl font-bold ">Job<span className="text-primary">Ilham</span></h1>
             </Link>
-            <div className="space-x-4 flex items-center">
-                <ModeToggle/>
-                {session?.user? (<form action={async() =>{
-                    "use server"
-                    await signOut({redirectTo:("/")})
-                }}>
-                    <Button >Logout</Button>
-                </form>) : 
-                (<Link href="http://localhost:3000/login"><Button variant="outline">Login</Button></Link>)}
-            </div>
+         
+         <div className="hidden md:flex items-center gap-5">
+            <ModeToggle/>
+            <Link href="/post-job" className= {buttonVariants({size:"lg"})}>Post Job</Link>
+            
+            {session?.user? (
+                <DropMenu name={session.user.name as string}
+                            image={session.user.image as string}
+                            email={session.user.email as string}/>
+            ):(
+             
+                <Link href="/login" className={buttonVariants({size:"lg" , variant:"outline"})}> Login</Link>
+            )}
+        
+         </div>
             
         </nav>
     )
