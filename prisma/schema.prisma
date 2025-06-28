@@ -43,10 +43,35 @@ enum userType {
   logo String
   website String
   xAccount String?
+
+  jobpost Jobpost[]
   user User @relation(fields: [userId] , references: [id])
   userId String @unique
   createdAt DateTime @default(now())
   updatedAT DateTime @updatedAt
+ }
+
+ model Jobpost {
+  id String @id @default(uuid())
+  jobTitle String
+  employmentType String
+  location String
+  salaryFrom Int
+  salaryTo Int
+  jobDescription String
+  listingDuration Int
+  benefits String[]
+  company Company @relation(fields: [companyId], references: [id])
+  companyId String 
+  status JobPostStatus @default(DRAFT)
+  createdAt DateTime @default(now())
+  updatedAT DateTime @updatedAt
+ }
+
+ enum JobPostStatus {
+  DRAFT
+  ACTIVE
+  EXPIRED
  }
 
  model Jobseeker {

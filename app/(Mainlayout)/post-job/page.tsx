@@ -6,6 +6,8 @@ import Logo3 from "@/public/pngegg (4).png"
 import Logo4 from "@/public/pngegg (10).png"
 import Logo5 from "@/public/pngegg (8).png"
 import Image from "next/image";
+import { JobPostForm } from "@/app/components/form/JobpostForm";
+
 
 
 const company = [
@@ -17,15 +19,43 @@ const company = [
     {id:5, name:"NextSphere", logo:Logo5}
 ]
 
+
+const testimonial = [
+
+    {
+        quote:"Success in business isn’t just about making money, it’s about making a difference.",
+        author:"Yeasmin Ilham",
+        company:"MaryKay"
+    },
+
+    {
+        quote:"A brand for a company is like a reputation for a person. You earn a reputation by trying to do hard things well.",
+        author:"Azad Rahman",
+        company:"NextSphere",
+    },
+
+    {
+        quote:"Great companies are built on great products, stronger teams, and unwavering trust.",
+        author:"Mark Johnson",
+        company:"PixelBloom",
+    }
+]
+
+const stats = [
+    {id:0, value:"10k+", label:"Monthly Active Job seekers"},
+    {id:1, value:"48h", label:"Average time to hire"},
+    {id:2, value:"95%", label:"Employer satisfaction rate"},
+    {id:3, value:"500+", label:"Companies hiring remotely"},
+]
+
+
 export default function JobPostpage(){
     return(
         <>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-5">
-        <Card className=" col-span-1 lg:col-span-2">
-            <CardHeader>
-                <CardTitle>Hey this is</CardTitle>
-            </CardHeader>
-        </Card>
+        
+            <JobPostForm/>
+        
         <div className="col-span-1">
             <Card>
                 <CardHeader>
@@ -33,7 +63,8 @@ export default function JobPostpage(){
                     <CardDescription>
                         Join thousands of companies hiring top talent
                     </CardDescription>
-                    <CardContent>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
                         <div className="grid grid-cols-3 gap-4">
                         {company.map((companies) =>(
                             <div key={companies.id}>
@@ -45,8 +76,28 @@ export default function JobPostpage(){
                             </div>
                         ))}
                         </div>
+                        <div className="space-y-4">
+                            {testimonial.map((testimonal, index) =>(
+                                <blockquote key={index} className="border-l-2 border-primary pl-4">
+                                    <p className="text-sm text-muted-foreground italic">"{testimonal.quote}"</p>
+                                    <footer className="text-sm mt-2 font-medium">
+                                        - {testimonal.author}, {testimonal.company}
+                                    </footer>
+                                </blockquote>
+                                
+                            ))}
+                        </div>
+                           
+                        <div className="grid grid-cols-2 gap-4">
+                         {stats.map((stat) =>(
+                               <div key={stat.id} className="rounded-lg bg-muted p-4">
+                                <h4 className="text-2xl font-bold">{stat.value}</h4>
+                                <p className="text-sm text-muted-foreground">{stat.label}</p>
+                               </div> 
+                            ))}
+                        </div>
                     </CardContent>
-                </CardHeader>
+                
             </Card>
         </div>
         </div>
