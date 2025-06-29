@@ -2,7 +2,7 @@
  
 import {z} from "zod";
 import { User } from "./userRequire"
-import { companySchema, JobseekerSchema } from "./zodSchema";
+import { companySchema, jobPostSchema, JobseekerSchema } from "./zodSchema";
 import { prisma } from "./prisma";
 import { redirect } from "next/navigation";
 import arcjet, { detectBot, shield } from "./arcjet";
@@ -86,4 +86,44 @@ return redirect("/")
                 
             });
             return redirect("/");
+          }
+
+
+          export async function CreateJobPost(data:z.infer<typeof jobPostSchema>){
+
+            const session = await User();
+
+                // arcjet code
+    const req = await request();
+    const decision = await aj.protect(req);
+
+    if(decision.isDenied()){
+        throw new Error ("Forbidden");
+    }
+    // arcjet code end
+    
+            const validateData = jobPostSchema.parse(data);
+
+            await prisma.jobpost.create({
+                data:{
+                    jobTitle:validateData.jobTitle,
+                    employmentType:validateData.employmentType,
+                    location:validateData.location,
+                    salaryFrom:validateData.salaryFrom,
+                    salaryTo:validateData.salaryTo,
+                    jobDescription:validateData.jobDescription,
+                    listingDuration:validateData.listingDuration,
+                    benefits:validateData.benefits,
+                    companyName:validateData.companyName,
+                     companyLocation:validateData.companyLocation,
+                    companyAbout:validateData.companyAbout,
+                    companyLogo:validateData.companyLogo,
+                    companyWebsite:validateData.companyWebsite,
+                    companyXAccount:validateData.companyXAccount,
+
+
+                }
+            })
+
+            return redirect("/")
           }
