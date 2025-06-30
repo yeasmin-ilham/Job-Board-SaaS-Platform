@@ -12,6 +12,9 @@ import { SelectValue } from "@radix-ui/react-select"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z} from "zod"
+import { SalaryRange } from "./SalaryRange"
+import { JobDescriptionEditor } from "../TextEditor/JobDescriptionEditor"
+import { MenuBar } from "../TextEditor/MenuBar"
 
 
 export function JobPostForm(){
@@ -142,12 +145,24 @@ const [pending, setpending] = useState(false)
           <FormItem>
             <FormLabel>Salary Range</FormLabel>
             <FormControl>
-
+            <SalaryRange control={form.control} minSalary={10000} maxSalary={1000000} currency="USD" step={2000}/>
             </FormControl>
+            <FormMessage/>
           </FormItem>
-
-          
                 </div>
+
+                      <FormField
+                    control={form.control}
+                    name="jobDescription"
+                    render={({field}) =>(
+                        <FormItem className="mt-3">
+                            <FormLabel>Job Description</FormLabel>
+                            <FormControl>
+                               <JobDescriptionEditor/>
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}/>
             </CardContent>
         </Card>
         </form>
