@@ -89,7 +89,7 @@ return redirect("/")
           }
 
 
-          export async function CreateJobPost(data:z.infer<typeof jobPostSchema>){
+        export async function CreateJobPost(data:z.infer<typeof jobPostSchema>){
 
             const session = await User();
 

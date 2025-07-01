@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { XIcon } from "lucide-react"
 import { UploadDropzone } from "@/lib/uploadthing"
+import { JobDateDuration } from "./JobListDuration"
 
 
 export function JobPostForm(){
@@ -36,7 +37,7 @@ const form = useForm<z.infer<typeof jobPostSchema>>({
   salaryTo:0,
   jobDescription:"",
   listingDuration:30,
-  benefits:"",
+  benefits:[],
   companyName:"",
   companyLocation:"",
   companyAbout:"",
@@ -46,13 +47,12 @@ const form = useForm<z.infer<typeof jobPostSchema>>({
     }
 })  
 
-
+const [pending, setpending] = useState(false)
 
 async function onSubmit(data:z.infer<typeof jobPostSchema>){
 
-const [pending, setpending] = useState(false)
-
     try{
+        
     setpending(true),
      await CreateJobPost(data)
     } catch (error){
@@ -66,7 +66,7 @@ const [pending, setpending] = useState(false)
     return(
      
      <Form {...form} >
-        <form  className="col-span-1 lg:col-span-2">
+        <form onSubmit={form.handleSubmit(onSubmit)}  className="col-span-1 lg:col-span-2">
         <Card>
            <CardHeader>
             <CardTitle className="text-xl font-bold">Job information</CardTitle>
@@ -255,7 +255,7 @@ const [pending, setpending] = useState(false)
             )}
             />
 
-                                 <FormField
+                    <FormField
             control={form.control}
             name="companyXAccount"
             render={({field}) => (
@@ -318,6 +318,29 @@ const [pending, setpending] = useState(false)
             />
             </CardContent>
         </Card>
+
+        <Card  className="mt-5">
+            <CardHeader>
+                <CardTitle className="text-xl font-bold">Job Listing Duration</CardTitle>
+            </CardHeader>
+            <CardContent>
+
+                <FormField
+                control={form.control}
+                name="listingDuration"
+                render={({field}) =>(
+                    <FormItem>
+                        <FormControl>
+                           <JobDateDuration field={field as any}/>
+                        </FormControl>
+                       <FormMessage/>
+                    </FormItem>
+                )}/>
+            </CardContent>
+        </Card>
+        <Button className="w-full mt-5" type="submit">
+            {pending? "Submitting...": "Post Job"}
+        </Button>
         </form>
      </Form>
      
