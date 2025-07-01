@@ -25,8 +25,9 @@ export const jobPostSchema = z.object({
   salaryFrom:z.number().min(1,"Salary from is required"),
   salaryTo:z.number().min(1, "Salary To is required"),
   jobDescription:z.string().min(1, "Job description is required"),
-  listingDuration:z.number().min(1,"Listing duration is required"),
   benefits:z.string().min(1,"Please select at least one benefit"),
+  listingDuration:z.number().min(1,"Listing duration is required"),
+  
   companyName:z.string().min(1," Company Name is required"),
   companyLocation:z.string().min(1,"Company Location is required"),
   companyAbout:z.string().min(10,"Company description is required"),
