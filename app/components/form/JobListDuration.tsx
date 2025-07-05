@@ -13,7 +13,7 @@ interface JobDay {
     price:number
 }
 
-  const JobDurationArray : JobDay[] = [
+   export const JobDurationArray : JobDay[] = [
     { day:30, about:"Standard Listing", price:99},
 
     {day:60,about:"Extended visibility" , price:179},

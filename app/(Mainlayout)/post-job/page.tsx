@@ -7,6 +7,9 @@ import Logo4 from "@/public/pngegg (10).png"
 import Logo5 from "@/public/pngegg (8).png"
 import Image from "next/image";
 import { JobPostForm } from "@/app/components/form/JobpostForm";
+import { prisma } from "@/lib/prisma";
+import { User } from "@/lib/userRequire";
+import { notFound, redirect } from "next/navigation";
 
 
 
@@ -49,12 +52,38 @@ const stats = [
 ]
 
 
-export default function JobPostpage(){
+async function getData(userId:string){
+    const data = await prisma.company.findUnique({
+        where:{
+            userId:userId
+        },
+
+        select:{
+            
+            name:true,
+            location:true,
+            about:true,
+            logo:true,
+            website:true,
+            xAccount:true,
+        }
+    })
+   
+ return data;
+}
+
+
+
+export default async function JobPostpage(){
+        
+    const session = await User();
+    const Alldata = await getData(session.id as string)
+    
     return(
         <>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-5">
         
-            <JobPostForm/>
+            <JobPostForm companyData={Alldata as any}/>
         
         <div className="col-span-1">
             <Card>

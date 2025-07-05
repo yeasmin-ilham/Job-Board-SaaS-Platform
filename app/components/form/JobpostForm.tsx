@@ -22,8 +22,21 @@ import { XIcon } from "lucide-react"
 import { UploadDropzone } from "@/lib/uploadthing"
 import { JobDateDuration } from "./JobListDuration"
 
+interface dataProps {
+companyData: {
+    location: string;
+    name: string;
+    about: string;
+    logo: string;
+    website: string;
+    xAccount: string;
+}
 
-export function JobPostForm(){
+}
+ 
+
+
+export function JobPostForm({companyData}: dataProps){
 
 const form = useForm<z.infer<typeof jobPostSchema>>({
 
@@ -38,19 +51,18 @@ const form = useForm<z.infer<typeof jobPostSchema>>({
   jobDescription:"",
   listingDuration:30,
   benefits:[],
-  companyName:"",
-  companyLocation:"",
-  companyAbout:"",
-  companyLogo:"",
-  companyWebsite:"",
-  companyXAccount:"",
+  companyName:companyData.name,
+  companyLocation:companyData.location,
+  companyAbout:companyData.about,
+  companyLogo:companyData.logo,
+  companyWebsite:companyData.website,
+  companyXAccount:companyData.xAccount,
     }
 })  
 
 const [pending, setpending] = useState(false)
 
 async function onSubmit(data:z.infer<typeof jobPostSchema>){
-
     try{
         
     setpending(true),
@@ -66,7 +78,7 @@ async function onSubmit(data:z.infer<typeof jobPostSchema>){
     return(
      
      <Form {...form} >
-        <form onSubmit={form.handleSubmit(onSubmit)}  className="col-span-1 lg:col-span-2">
+        <form onSubmit={form.handleSubmit(onSubmit)}  className="col-span-1 lg:col-span-2 ">
         <Card>
            <CardHeader>
             <CardTitle className="text-xl font-bold">Job information</CardTitle>
@@ -85,6 +97,7 @@ async function onSubmit(data:z.infer<typeof jobPostSchema>){
                             <FormMessage/>
                         </FormItem>
                     )}/>
+                     
 
                     <FormField
                     control={form.control}
@@ -338,7 +351,7 @@ async function onSubmit(data:z.infer<typeof jobPostSchema>){
                 )}/>
             </CardContent>
         </Card>
-        <Button className="w-full mt-5" type="submit">
+        <Button className="w-full mt-5 mb-3" type="submit" disabled={pending}>
             {pending? "Submitting...": "Post Job"}
         </Button>
         </form>
