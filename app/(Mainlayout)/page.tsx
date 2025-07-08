@@ -2,7 +2,8 @@
 import {  NoJobcard } from "../components/form/NoJobcard";
 import { prisma } from "@/lib/prisma";
 import { FilterCard } from "../components/form/Filter";
-import { JobCard } from "../components/form/Jobcard";
+import { CompanyCard } from "../components/form/CompanyCard";
+
 
 
    async function getData(){
@@ -11,13 +12,13 @@ import { JobCard } from "../components/form/Jobcard";
                 status:"DRAFT"
             },
             select:{
+   id:true,             
   jobTitle:true,
   employmentType:true,
   location:true,
   salaryFrom:true,
   salaryTo:true,
-  jobDescription:true,
-  listingDuration:true,
+  createdAt:true,
   company:{
     select:{
         name:true,
@@ -37,7 +38,9 @@ import { JobCard } from "../components/form/Jobcard";
 
 
 export default async function Home(){
-        const jobpostData = await getData();
+       const jobpostData = await getData();
+       
+        
        
     return(
        <>
@@ -46,9 +49,12 @@ export default async function Home(){
 
        <div className="col-span-2">
        {jobpostData.length>0? (
-<div>
-    <JobCard/>
-</div>
+
+       <div className="flex flex-col gap-6">
+        {jobpostData.map((job) =>(
+             <CompanyCard key={job.id} postData={job}/>
+        ))}
+       </div>
        ) :
        (
          <NoJobcard title="NO Jobs found" about="Try searching for a
