@@ -39,7 +39,7 @@ function formateTime(date:Date){
 
 export function CompanyCard({postData} : iappProp){
     return(
-        <Link href={`/job/${postData.id}}`}>
+        <Link href={`/job/${postData.id}`}>
            <Card className="hover:shadow-lg transition-all duration-300 hover:border-primary">
       <CardHeader>
     <div className="flex flex-col md:flex-row gap-4">

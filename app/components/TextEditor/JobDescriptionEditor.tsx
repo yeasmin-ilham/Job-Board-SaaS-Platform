@@ -30,9 +30,8 @@ export function JobDescriptionEditor({field}: iappProps){
         field.onChange(JSON.stringify(editor?.getJSON()))
     },
     content:field.value? JSON.parse(field.value):"",
-
-
   })
+  
     return(
         <div className='w-full border rounded-lg overflow-hidden bg-card '>
             <MenuBar editor={editor}/>
