@@ -25,6 +25,7 @@ onboardingCompleted Boolean @default(false)
 
   company Company?
   jobseeker Jobseeker?
+  saveJobPost SavedJobPost[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -64,6 +65,7 @@ enum userType {
   benefits String[]
   company Company @relation(fields: [companyId], references: [id])
   companyId String 
+  saveJobPost SavedJobPost[]
   status JobPostStatus @default(DRAFT)
   createdAt DateTime @default(now())
   updatedAT DateTime @updatedAt
@@ -75,6 +77,20 @@ enum userType {
   EXPIRED
  }
 
+model SavedJobPost {
+  id String @id @default(uuid())
+  jobPost Jobpost @relation(fields: [jobPostId], references: [id])
+  jobPostId String 
+  user User @relation(fields: [userId], references: [id])
+  userId String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([jobPostId, userId])
+}
+
+
+
  model Jobseeker {
   id String @id @default(uuid())
   name String
@@ -85,6 +101,9 @@ enum userType {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
  }
+
+
+
 model Account {
   userId            String
   type              String
@@ -123,3 +142,5 @@ model VerificationToken {
  
   @@id([identifier, token])
 }
+
+

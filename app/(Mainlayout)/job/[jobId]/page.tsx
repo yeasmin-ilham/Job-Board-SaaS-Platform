@@ -1,14 +1,31 @@
 import { benefits } from "@/app/components/form/BenefitsArray";
 import { JsonToHtml } from "@/app/components/JsonToHtml";
+import { SubmitButton } from "@/app/components/SubmitButton";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import arcjet, { detectBot } from "@/lib/arcjet";
+import { auth } from "@/lib/auth";
+
 import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils";
+import { request } from "@arcjet/next";
+
+
 import { Heart } from "lucide-react";
 import Image from "next/image";
-
+import Link from "next/link";
 import { notFound } from "next/navigation";
+
+
+const aj = arcjet.withRule(
+       detectBot({
+      mode: "LIVE",
+      allow: [
+        "CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"
+      ],
+    }),
+)
 
 
 async function getData(jobId:string){
@@ -40,7 +57,6 @@ async function getData(jobId:string){
         
     })
 
-
     if(!data){
         return notFound();
     }
@@ -53,8 +69,19 @@ async function getData(jobId:string){
 
 export default async function Job({params}: {params: Promise<{ jobId : string }>}){
      
-  const {jobId} = await params
+  const {jobId} = await params;
+
+    // arcjet code
+    const req = await request();
+    const decision = await aj.protect(req);
+
+    if(decision.isDenied()){
+        throw new Error ("Forbidden");
+    }
+    // arcjet code end
+
     const data = await getData(jobId);
+    const session = await auth();
         
     return(
     <>
@@ -72,13 +99,22 @@ export default async function Job({params}: {params: Promise<{ jobId : string }>
             </div>
         </div>
 
-        <Button variant="outline">
-            <Heart className="size-4"/>
-            Save Job
-        </Button>
+
+        {session?.user? (
+        <form>
+            <SubmitButton savedJob={true}/>
+        </form>
+        ) : (
+           <Link href="/login" className={buttonVariants({variant:"outline"})}>
+           <Heart className="size-4"/>
+           Save Job
+           </Link> 
+        )}
+        
+
     </div>
     <section>
-        <JsonToHtml json={JSON.parse(data?.jobDescription)}/>
+        <JsonToHtml json={JSON.parse(data?.jobDescription as string)}/>
     </section>
     <section>
 <div className="font-semibold mb-4 flex gap-1">
@@ -124,7 +160,7 @@ export default async function Job({params}: {params: Promise<{ jobId : string }>
         <div>
             <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Apply before</span>
-                <span className="text-sm"> {new Date(data?.createdAt.getTime() + data?.listingDuration * 24 *60 * 60 * 1000).toLocaleDateString("en-US", {
+                <span className="text-sm"> {new Date(data!.createdAt.getTime() + data!.listingDuration  * 24 *60 * 60 * 1000).toLocaleDateString("en-US", {
                     month:"long",
                     day:"numeric",
                     year:"numeric",

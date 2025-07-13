@@ -200,6 +200,50 @@ if(!stripeCustomerId){
           }
 
 
+          async function SavedJobPost(jobId:string){
+                
+           const session = await User();
+
+    // arcjet code
+    const req = await request();
+    const decision = await aj.protect(req);
+
+    if(decision.isDenied()){
+        throw new Error ("Forbidden");
+    }
+    // arcjet code end
+
+            await prisma.savedJobPost.create({
+                data:{
+                    jobPostId:jobId,
+                    userId:session.id,
+                }
+            })
+          }
+
+
+       async function UnSavedJobPost(SavedJobPostId:string){
+                
+        const session = await User();
+
+    // arcjet code
+    const req = await request();
+    const decision = await aj.protect(req);
+
+    if(decision.isDenied()){
+        throw new Error ("Forbidden");
+    }
+    // arcjet code end
+
+            await prisma.savedJobPost.delete({
+                where:{
+                    jobPostId:SavedJobPostId,
+                    userId:session.id,
+                }
+            })
+          }
+
+
 
 
   
