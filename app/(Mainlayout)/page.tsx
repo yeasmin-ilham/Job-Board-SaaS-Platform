@@ -58,7 +58,7 @@ export default async function Home(){
        ) :
        (
          <NoJobcard title="NO Jobs found" about="Try searching for a
-         different job title or location." buttontext="Clear all filters"/>
+         different job title or location." buttontext="Clear all filters" link="/"/>
        )}
        </div>
 

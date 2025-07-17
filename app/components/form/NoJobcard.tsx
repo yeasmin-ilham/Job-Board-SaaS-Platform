@@ -7,9 +7,10 @@ interface iAppProps{
     title:string;
     about:string;
     buttontext:string;
+    link:string;
 }
 
-export function NoJobcard({title,about, buttontext}: iAppProps){
+export function NoJobcard({title,about, buttontext,link}: iAppProps){
     return(
       <>
     
@@ -21,7 +22,7 @@ export function NoJobcard({title,about, buttontext}: iAppProps){
             <p className="text-xl font-semibold text-center">{title}</p>
           <p className="text-sm text-muted-foreground max-w-sm text-balance tracking-tigh text-center"> {about}</p>
       </div>
-          <Link href="/" className={buttonVariants()}>
+          <Link href={link} className={buttonVariants()}>
           <PlusCircle/> {buttontext}
           </Link>
       </div>

@@ -9,6 +9,7 @@ import arcjet, { detectBot, shield } from "./arcjet";
 import { request } from "@arcjet/next";
 import { stripe } from "./stripe";
 import { JobDurationArray } from "@/app/components/form/JobListDuration";
+import { revalidatePath } from "next/cache";
 
 
 // arcjet code , use arcjet to protect my application from attack
@@ -200,7 +201,7 @@ if(!stripeCustomerId){
           }
 
 
-          async function SavedJobPost(jobId:string){
+       export async function SavedJobPost(jobId :string){
                 
            const session = await User();
 
@@ -215,14 +216,15 @@ if(!stripeCustomerId){
 
             await prisma.savedJobPost.create({
                 data:{
-                    jobPostId:jobId,
-                    userId:session.id,
+                    jobPostId:jobId ,
+                    userId:session.id as string,
                 }
             })
+            revalidatePath(`/job/${jobId}`)
           }
 
 
-       async function UnSavedJobPost(SavedJobPostId:string){
+    export  async function UnSavedJobPost(SavedJobPostId:string){
                 
         const session = await User();
 
@@ -235,12 +237,17 @@ if(!stripeCustomerId){
     }
     // arcjet code end
 
-            await prisma.savedJobPost.delete({
+        const data = await prisma.savedJobPost.delete({
                 where:{
-                    jobPostId:SavedJobPostId,
+                    id:SavedJobPostId,
                     userId:session.id,
+                },
+                select:{
+                    jobPostId:true,
                 }
             })
+            revalidatePath(`/job/${data.jobPostId}`)
+            
           }
 
 
