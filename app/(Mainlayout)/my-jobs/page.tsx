@@ -1,4 +1,6 @@
 
+
+import { CopyJob } from "@/app/components/CopyJob";
 import { NoJobcard } from "@/app/components/form/NoJobcard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { prisma } from "@/lib/prisma"
 import { User } from "@/lib/userRequire";
-import { CopyCheck, CopyCheckIcon, MoreHorizontal, PenBox, PenBoxIcon, PlayCircle, XCircle } from "lucide-react";
+import {  CopyCheckIcon, MoreHorizontal, PenBoxIcon, XCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -63,12 +65,12 @@ export default async function myJob(){
                             <TableHead>Job Title</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Created at</TableHead>
-                            <TableHead>Actions</TableHead>
+                            <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                           {data.map((job) => (
-                         <TableRow key={job.id}>
+                         <TableRow key={job.id} >
                           <TableCell>
                             <Image
                             src={job.company.logo}
@@ -86,7 +88,7 @@ export default async function myJob(){
                           })
                           }</TableCell>
 
-                              <TableCell>
+                              <TableCell className="text-right">
                     <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon">
@@ -102,12 +104,7 @@ export default async function myJob(){
                           </Link>
                         </DropdownMenuItem>
 
-                        <DropdownMenuItem asChild>
-                        <Link href={`/my-jobs/${job.id}/copy`}>
-                              <CopyCheckIcon/> 
-                            Copy Job URL
-                        </Link>
-                        </DropdownMenuItem>
+                    <CopyJob url={`${process.env.NEXT_PUBLIC_URL}/job/${job.id}`}/>
                         <DropdownMenuSeparator/>
 
                         <DropdownMenuItem asChild>

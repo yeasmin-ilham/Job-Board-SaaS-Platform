@@ -5,6 +5,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
+import { Toaster } from "@/components/ui/sonner";
 
 
 const geistSans = Geist({
@@ -43,6 +44,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
           {children}
+          <Toaster closeButton richColors/>
         </ThemeProvider>
       </body>
     </html>

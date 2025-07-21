@@ -1,68 +1,31 @@
 
-import {  NoJobcard } from "../components/form/NoJobcard";
-import { prisma } from "@/lib/prisma";
 import { FilterCard } from "../components/form/Filter";
-import { CompanyCard } from "../components/form/CompanyCard";
+import { JobListingsCard } from "../components/form/JobListings";
 
 
 
-   async function getData(){
-        const data = await prisma.jobpost.findMany({
-            where:{
-                status:"DRAFT"
-            },
-            select:{
-   id:true,             
-  jobTitle:true,
-  employmentType:true,
-  location:true,
-  salaryFrom:true,
-  salaryTo:true,
-  createdAt:true,
-  company:{
-    select:{
-        name:true,
-        location:true,
-        about:true,
-        logo:true,
-    }
-  }
-            },
-       orderBy:{
-        createdAt:"desc"
-       }
-        });
-        return data;
-     }
+type SearchParams = {
+  searchParams: Promise<{
+   page? : string;
+   jobTypes?:string;
+}>
+  
+}
 
-
-
-export default async function Home(){
-       const jobpostData = await getData();
-       
-        
-       
+export default async function Home({searchParams}: SearchParams){
+       const params = await searchParams;
+       const currentPage = Number(params.page) || 1 
+           const jobTypes = params.jobTypes?.split(",") || []
     return(
        <>
        <div className="grid grid-cols-1 md:grid-cols-3 gap-5"> 
         <FilterCard/>
-
-       <div className="col-span-2">
-       {jobpostData.length>0? (
-
-       <div className="flex flex-col gap-6">
-        {jobpostData.map((job) =>(
-             <CompanyCard key={job.id} postData={job}/>
-        ))}
+        
+       <div className="col-span-2 flex flex-col gap-6">
+          <JobListingsCard currentPage={currentPage} jobTypes={jobTypes}/>
        </div>
-       ) :
-       (
-         <NoJobcard title="NO Jobs found" about="Try searching for a
-         different job title or location." buttontext="Clear all filters" link="/"/>
-       )}
-       </div>
-
-        </div>  
+        </div> 
+       
        </>
     )
 }

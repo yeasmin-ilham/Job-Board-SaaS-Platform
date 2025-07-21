@@ -109,6 +109,7 @@ return redirect("/")
              
             const validateData = jobPostSchema.parse(data);
 
+
             const company = await prisma.company.findUnique({
             where:{
                 userId: session.id,
@@ -250,8 +251,66 @@ if(!stripeCustomerId){
             
           }
 
+export async function EditJobPost(value:z.infer<typeof jobPostSchema>, jobId:string){
+    
+    const session = await User();
 
+    
+    // arcjet code
+    const req = await request();
+    const decision = await aj.protect(req);
 
+    if(decision.isDenied()){
+        throw new Error ("Forbidden");
+    }
+    // arcjet code end
 
+    const validateData = jobPostSchema.parse(value)
+
+    await prisma.jobpost.update({
+        where:{
+        id:jobId,
+        },
+        data:{
+    jobTitle:validateData.jobTitle,
+    employmentType:validateData.employmentType,
+    location:validateData.location,
+    salaryFrom:validateData.salaryFrom,
+    salaryTo:validateData.salaryTo,
+    jobDescription:validateData.jobDescription,
+    listingDuration:validateData.listingDuration,
+    benefits:validateData.benefits,
+    
+        }
+    })
+
+    return redirect("/my-jobs")
+}
+
+export async function DeletePost(jobId : string) {
+
+    const session = await User();
+
+        // arcjet code
+    const req = await request();
+    const decision = await aj.protect(req);
+
+    if(decision.isDenied()){
+        throw new Error ("Forbidden");
+    }
+    // arcjet code end
+    
+    await prisma.jobpost.delete({
+      where:{
+        id:jobId,
+        company:{
+            userId:session.id
+        }
+      }
+        
+    })
+
+    return redirect("/my-jobs")
+}
   
 

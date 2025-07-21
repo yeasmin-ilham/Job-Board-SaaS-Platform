@@ -1,71 +1,79 @@
 "use client"
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { countryList } from "@/lib/countryList"
-import { CreateJobPost } from "@/lib/serveraction"
-import { jobPostSchema } from "@/lib/zodSchema"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { z} from "zod"
 import { SalaryRange } from "./SalaryRange"
 import { JobDescriptionEditor } from "../TextEditor/JobDescriptionEditor"
-import Image from "next/image"
 import { ShowBenefits } from "./ShowBenefits"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { XIcon } from "lucide-react"
 import { UploadDropzone } from "@/lib/uploadthing"
 import { JobDateDuration } from "./JobListDuration"
+import Image from "next/image"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z} from "zod"
+import { jobPostSchema } from "@/lib/zodSchema"
+import { EditJobPost } from "@/lib/serveraction"
 
-interface dataProps {
-companyData: {
+interface jobInformationProps {
+    data: {
+    id: string;
+    company: {
+        name: string;
+        location: string;
+        about: string;
+        logo: string;
+        website: string;
+        xAccount: string;
+    };
+    jobTitle: string;
+    employmentType: string;
     location: string;
-    name: string;
-    about: string;
-    logo: string;
-    website: string;
-    xAccount: string;
+    salaryFrom: number;
+    salaryTo: number;
+    jobDescription: string;
+    listingDuration: number;
+    benefits: string[];
+} 
 }
 
-}
- 
 
-
-export function JobPostForm({companyData}: dataProps){
+export function EditJobForm({data}: jobInformationProps){
 
 const form = useForm<z.infer<typeof jobPostSchema>>({
 
     resolver:zodResolver(jobPostSchema),
 
     defaultValues:{
-  jobTitle:"",
-  employmentType:"",
-  location:"",
-  salaryFrom: 0,
-  salaryTo:0,
-  jobDescription:"",
-  listingDuration:30,
-  benefits:[],
-  companyName:companyData.name,
-  companyLocation:companyData.location,
-  companyAbout:companyData.about,
-  companyLogo:companyData.logo,
-  companyWebsite:companyData.website,
-  companyXAccount:companyData.xAccount,
+  jobTitle:data.jobTitle,
+  employmentType:data.employmentType,
+  location:data.location,
+  salaryFrom: data.salaryTo,
+  salaryTo:data.salaryFrom,
+  jobDescription:data.jobDescription,
+  listingDuration:data.listingDuration,
+  benefits:data.benefits,
+  companyName:data.company.name,
+  companyLocation:data.company.location,
+  companyAbout:data.company.about,
+  companyLogo:data.company.logo,
+  companyWebsite:data.company.website,
+  companyXAccount:data.company.xAccount,
     }
 })  
 
 const [pending, setpending] = useState(false)
 
-async function onSubmit(data:z.infer<typeof jobPostSchema>){
+async function onSubmit(value:z.infer<typeof jobPostSchema>){
     try{
         
     setpending(true),
-     await CreateJobPost(data)
+     await EditJobPost(value, data.id)
     } catch (error){
   if(error instanceof Error && error.message !== "NEXT_REDIRECT"){
         console.log("something went wrong")
@@ -74,9 +82,9 @@ async function onSubmit(data:z.infer<typeof jobPostSchema>){
     setpending(false)
     }
 }
+
     return(
-     
-     <Form {...form} >
+             <Form {...form} >
         <form onSubmit={form.handleSubmit(onSubmit)}  className="col-span-1 lg:col-span-2 ">
         <Card>
            <CardHeader>
@@ -351,10 +359,9 @@ async function onSubmit(data:z.infer<typeof jobPostSchema>){
             </CardContent>
         </Card>
         <Button className="w-full mt-5 mb-3" type="submit" disabled={pending}>
-            {pending? "Submitting...": "Post Job"}
+            {pending? "Submitting...": "Edit Job Post"}
         </Button>
         </form>
      </Form>
-     
     )
 }
