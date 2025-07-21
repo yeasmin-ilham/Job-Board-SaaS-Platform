@@ -37,7 +37,7 @@ const [data , savedJob ] = await Promise.all([
         where:{
             
             id:jobId,
-            status:"DRAFT"
+            status:"ACTIVE"
             
         },
         select:{

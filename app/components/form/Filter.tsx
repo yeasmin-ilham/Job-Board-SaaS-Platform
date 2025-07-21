@@ -15,11 +15,11 @@ import { useCallback } from "react";
 
 
 
-const jobType = [
-    {id:0,type:"Full-time"},
-    {id:1,type:"Part-time"},
-    {id:2,type:"Contract"},
-    {id:3,type:"Internship"}
+const jobTypes = [
+    {id:0,type:"full time"},
+    {id:1,type:"part time"},
+    {id:2,type:"contract"},
+    {id:3,type:"internship"}
 ]
 
 
@@ -29,7 +29,8 @@ export function FilterCard(){
         
         const searchParams = useSearchParams();
 
-        const currentJobTypes = searchParams.get("jobType")?.split(",") || []
+        const currentJobTypes = searchParams.get("jobTypes")?.split(",") || []
+        const currentLocation = searchParams.get("location") || "";
 
         function clearAllFilter(){
             router.push("/")
@@ -50,17 +51,22 @@ export function FilterCard(){
                 [searchParams]
             )
         
-   function handleJobType(jobType:string, checked:boolean){
+   function handleJobType(jobTypes:string, checked:boolean){
         const current = new Set(currentJobTypes);
         if(checked){
-            current.add(jobType)
+            current.add(jobTypes)
         }else{
-            current.delete(jobType)
+            current.delete(jobTypes)
         }
 
         const newValue = Array.from(current).join(",");
-        router.push(`?${createQueryString('jobType' , newValue)}`)
+        router.push(`?${createQueryString('jobTypes' , newValue)}`)
     }
+
+
+function handleLocationChange(location: string){
+    router.push( `?${createQueryString('location' , location)}`)
+}
 
     return(
         <div>
@@ -73,7 +79,7 @@ export function FilterCard(){
             <CardContent className="space-y-6">
                 <p className=" mt-2 text-lg">Job Type</p>
                 <div className="grid grid-cols-2 mt-3">
-                    {jobType.map((job) => 
+                    {jobTypes.map((job) => 
                 <div key={job.id} className="flex items-center gap-2" >
                     <Checkbox onCheckedChange={(checked) => {
                        handleJobType(job.type ,  checked as boolean)
@@ -91,7 +97,9 @@ export function FilterCard(){
                 <div className="space-y-4">
                     <p className="text-lg">Location</p>
 
-                <Select>
+                <Select onValueChange={(location) =>{
+                handleLocationChange(location)
+                }} value={currentLocation}>
                     <SelectTrigger>
                         <SelectValue placeholder="Select Location"/>
                     </SelectTrigger>

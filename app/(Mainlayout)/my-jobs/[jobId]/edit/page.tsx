@@ -48,6 +48,6 @@ export default async function EditJob({params} : {params : Promise<{jobId:string
     const session = await User();
     const jobInfo = await getData(jobId, session.id as string)
     return(
-          <EditJobForm data={jobInfo}/>
+          <EditJobForm data={jobInfo as any}/>
     )
 }

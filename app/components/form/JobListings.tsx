@@ -4,17 +4,20 @@ import { NoJobcard } from "./NoJobcard";
 import { MainPagenation } from "./MainPagenation";
 import { JobPostStatus } from "@prisma/client";
 
-   async function getData({page = 1, pageSize = 2, jobTypes = [] } : {
-    page: number, pageSize:number, jobTypes:string[]
+   async function getData({page = 1, pageSize = 2, jobTypes = [], location= "" } : {
+    page: number, pageSize:number, jobTypes:string[], location:string;
    }){
     const skip = (page - 1) * pageSize
 
     const where = {
-      status:JobPostStatus.DRAFT,
+      status:JobPostStatus.ACTIVE,
       ...(jobTypes.length> 0 && {
         employmentType:{
           in:jobTypes,
         }
+      }),
+      ...(location && location !== "worldwide" && {
+        location:location,
       })
     }
 
@@ -47,10 +50,10 @@ const [data, totalCount] = await Promise.all([
 
         prisma.jobpost.count({
           where:{
-            status:"DRAFT",
-          }
-        })
-])
+            status:"ACTIVE",
+          },
+        }),
+]);
 
         return{
           jobs:data,
@@ -58,9 +61,9 @@ const [data, totalCount] = await Promise.all([
         }
      }
 
-export async function JobListingsCard({currentPage , jobTypes} : {currentPage : number, jobTypes: string[]}){
+export async function JobListingsCard({currentPage , jobTypes , location} : {currentPage : number, jobTypes: string[], location:string}){
     
-const {jobs , totalPages} = await getData({page: currentPage , pageSize:2, jobTypes: jobTypes});
+const {jobs , totalPages} = await getData({page: currentPage , pageSize:2, jobTypes: jobTypes , location:location});
 
 return(
 <>

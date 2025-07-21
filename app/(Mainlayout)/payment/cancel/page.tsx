@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { User } from "@/lib/userRequire";
 import { XIcon} from "lucide-react";
 import Link from "next/link";
 
-export default function SuccessPaymen(){
+export default async function SuccessPaymen(){
+    await User();
     return(
         <>
         <div className=" min-h-[550px] flex justify-center items-center">
