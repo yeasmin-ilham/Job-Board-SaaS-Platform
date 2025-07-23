@@ -10,6 +10,7 @@ import { request } from "@arcjet/next";
 import { stripe } from "./stripe";
 import { JobDurationArray } from "@/app/components/form/JobListDuration";
 import { revalidatePath } from "next/cache";
+import { inngest } from "@/app/utils/inngest/client";
 
 
 // arcjet code , use arcjet to protect my application from attack
@@ -148,7 +149,7 @@ if(!stripeCustomerId){
 }
 
 
-          await prisma.jobpost.create({
+      const jobPost =  await prisma.jobpost.create({
                 
                 data:{
                     jobTitle:validateData.jobTitle,
@@ -160,8 +161,9 @@ if(!stripeCustomerId){
                     listingDuration:validateData.listingDuration,
                     benefits:validateData.benefits,
                    companyId:company.id,
-
-
+                },
+                select:{
+                    id:true,
                 }
             })
 
@@ -173,6 +175,14 @@ if(!stripeCustomerId){
            if(!princingTier){
             throw new Error("Invalid Listing Duration Selected")
            }
+
+          await inngest.send({
+            name:"job/created",
+            data:{
+                jobId:jobPost.id,
+                expirationDays:validateData.listingDuration,
+            }
+          })
 
            const sessionForStripe = await stripe.checkout.sessions.create({
             customer:stripeCustomerId,
@@ -193,6 +203,10 @@ if(!stripeCustomerId){
                 quantity:1,
              }
             ],
+            metadata:{
+                jobId: jobPost.id,
+            },
+
             mode:"payment",
             success_url:`${process.env.NEXT_PUBLIC_URL}/payment/success`,
             cancel_url:`${process.env.NEXT_PUBLIC_URL}/payment/cancel`,
@@ -308,6 +322,11 @@ export async function DeletePost(jobId : string) {
         }
       }
         
+    })
+
+    await inngest.send({
+        name:"job/cancel.expiration",
+        data:{jobId:jobId}
     })
 
     return redirect("/my-jobs")
