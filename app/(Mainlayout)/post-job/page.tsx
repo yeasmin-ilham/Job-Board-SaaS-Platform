@@ -1,3 +1,6 @@
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Logo0 from "@/public/pngegg (1).png"
 import Logo1 from "@/public/pngegg (11).png"
@@ -9,7 +12,7 @@ import Image from "next/image";
 import { JobPostForm } from "@/app/components/form/JobpostForm";
 import { prisma } from "@/lib/prisma";
 import { User } from "@/lib/userRequire";
-import { notFound, redirect } from "next/navigation";
+
 
 
 
@@ -108,7 +111,7 @@ export default async function JobPostpage(){
                         <div className="space-y-4">
                             {testimonial.map((testimonal, index) =>(
                                 <blockquote key={index} className="border-l-2 border-primary pl-4">
-                                    <p className="text-sm text-muted-foreground italic">"{testimonal.quote}"</p>
+                                    <p className="text-sm text-muted-foreground italic"> {testimonal.quote} </p>
                                     <footer className="text-sm mt-2 font-medium">
                                         - {testimonal.author}, {testimonal.company}
                                     </footer>

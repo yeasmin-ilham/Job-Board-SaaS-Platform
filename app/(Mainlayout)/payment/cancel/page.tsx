@@ -15,7 +15,7 @@ export default async function SuccessPaymen(){
         <CardHeader>
             <CardTitle className="font-bold text-xl">Payment Cancelled</CardTitle>
             <CardDescription className="text-muted-foreground text-sm tracking-tight">
-                NO worries, You won't be charged. Please try again! Are you sure want to cancel?
+                NO worries, You wont be charged. Please try again! Are you sure want to cancel?
             </CardDescription>
         </CardHeader>
         <Button className="w-full" asChild variant="destructive">

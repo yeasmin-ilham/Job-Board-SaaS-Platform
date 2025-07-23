@@ -1,6 +1,5 @@
-import { auth } from "@/lib/auth";
+
 import { User } from "@/lib/userRequire";
-import { redirect } from "next/navigation";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 

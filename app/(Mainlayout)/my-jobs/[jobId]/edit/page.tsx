@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { prisma } from "@/lib/prisma"
 import { EditJobForm } from "@/app/components/form/EditJobForm"
 import { notFound } from "next/navigation";

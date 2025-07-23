@@ -267,7 +267,7 @@ if(!stripeCustomerId){
 
 export async function EditJobPost(value:z.infer<typeof jobPostSchema>, jobId:string){
     
-    const session = await User();
+         await User();
 
     
     // arcjet code

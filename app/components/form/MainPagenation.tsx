@@ -72,7 +72,7 @@ const router = useRouter();
         {generatePaginationItems().map((page, index) => (
             page === null ? 
             (
-                <PaginationItem>
+                <PaginationItem key={index}>
                 <PaginationEllipsis/>
             </PaginationItem>
             ) : (

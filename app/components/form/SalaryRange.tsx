@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
 import { Control, useController } from "react-hook-form";
-import { number } from "zod";
 import { FormatCurrency } from "./FormatCurrency";
 
 interface iAppProps {
@@ -9,10 +9,10 @@ interface iAppProps {
     minSalary:number;
     maxSalary:number;
     step:number;
-    currency:string
+   
 }
 
-export function SalaryRange({control,minSalary,maxSalary,step,currency}: iAppProps){
+export function SalaryRange({control,minSalary,maxSalary,step}: iAppProps){
 
     const {field:formField} = useController({
         name:"salaryFrom",

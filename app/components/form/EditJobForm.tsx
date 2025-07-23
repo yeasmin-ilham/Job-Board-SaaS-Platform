@@ -1,3 +1,5 @@
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -72,7 +74,7 @@ const [pending, setpending] = useState(false)
 async function onSubmit(value:z.infer<typeof jobPostSchema>){
     try{
         
-    setpending(true),
+    setpending(true)
      await EditJobPost(value, data.id)
     } catch (error){
   if(error instanceof Error && error.message !== "NEXT_REDIRECT"){
@@ -170,7 +172,7 @@ async function onSubmit(value:z.infer<typeof jobPostSchema>){
           <FormItem>
             <FormLabel>Salary Range</FormLabel>
             <FormControl>
-            <SalaryRange control={form.control} minSalary={10000} maxSalary={1000000} currency="USD" step={2000}/>
+            <SalaryRange control={form.control} minSalary={10000} maxSalary={1000000} step={2000}/>
             </FormControl>
             <FormMessage/>
           </FormItem>
