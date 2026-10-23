@@ -86,7 +86,7 @@ export default async function JobPostpage(){
         <>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-5">
         
-            <JobPostForm companyData={Alldata as any}/>
+            <JobPostForm companyData={Alldata}/>
         
         <div className="col-span-1">
             <Card>

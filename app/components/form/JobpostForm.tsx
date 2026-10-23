@@ -22,43 +22,39 @@ import { XIcon } from "lucide-react"
 import { UploadDropzone } from "@/lib/uploadthing"
 import { JobDateDuration } from "./JobListDuration"
 
-interface dataProps {
-companyData: {
-    location: string;
-    name: string;
-    about: string;
-    logo: string;
-    website: string;
-    xAccount: string;
+interface CompanyData {
+  location: string;
+  name: string;
+  about: string;
+  logo: string;
+  website: string;
+  xAccount: string;
 }
 
+interface JobPostFormProps {
+  companyData: CompanyData | null;
 }
- 
 
-
-export function JobPostForm({companyData}: dataProps){
-
-const form = useForm<z.infer<typeof jobPostSchema>>({
-
-    resolver:zodResolver(jobPostSchema),
-
-    defaultValues:{
-  jobTitle:"",
-  employmentType:"",
-  location:"",
-  salaryFrom: 0,
-  salaryTo:0,
-  jobDescription:"",
-  listingDuration:30,
-  benefits:[],
-  companyName:companyData.name,
-  companyLocation:companyData.location,
-  companyAbout:companyData.about,
-  companyLogo:companyData.logo,
-  companyWebsite:companyData.website,
-  companyXAccount:companyData.xAccount,
-    }
-})  
+export function JobPostForm({ companyData }: JobPostFormProps) {
+  const form = useForm<z.infer<typeof jobPostSchema>>({
+    resolver: zodResolver(jobPostSchema),
+    defaultValues: {
+      jobTitle: "",
+      employmentType: "",
+      location: "",
+      salaryFrom: 0,
+      salaryTo: 0,
+      jobDescription: "",
+      listingDuration: 30,
+      benefits: [],
+      companyName: companyData?.name ?? "",
+      companyLocation: companyData?.location ?? "",
+      companyAbout: companyData?.about ?? "",
+      companyLogo: companyData?.logo ?? "",
+      companyWebsite: companyData?.website ?? "",
+      companyXAccount: companyData?.xAccount ?? "",
+    },
+  });
 
 const [pending, setpending] = useState(false)
 
