@@ -28,7 +28,7 @@ interface CompanyData {
   about: string;
   logo: string;
   website: string;
-  xAccount: string;
+  xAccount: string | null ;
 }
 
 interface JobPostFormProps {
